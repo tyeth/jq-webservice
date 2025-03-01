@@ -15,6 +15,10 @@ Sure, knock yourself out. That's the main reason I stuck an API Key in, of DEMO 
 No limits, but if you end up in a crazy situation then you may get blocked. It's unlikely I'll notice to do that blocking though, so have at it (read point above). Eventually (check back if you ever have errors) I may setup a key system, free still, but to avoid abuse affecting others.
 
 
+### Can I get JSON on HTTPS sites using the HTTP (insecure) version of the hosted site at http://jq.gdenu.fi/ a bit like an insecure / https-busting proxy?
+
+Yes, I liked the idea of potentially using it for lower memory usage on those pesky embedded microcontrollers.
+
 
 ### Got some docs?
 
