@@ -1,3 +1,6 @@
+// Now available at:
+// https://jq.gdenu.fi
+
 require("dotenv").config();
 const express = require("express");
 const fetch = (...args) =>
@@ -25,7 +28,7 @@ const authenticateApiKey = (req, res, next) => {
 
 app.get("/filter", authenticateApiKey, async (req, res) => {
   try {
-    const { url, jqQuery, ignoredFields } = req.query;
+    const { url, jqQuery, ignoredFields, sort } = req.query;
 
     if (!url) {
       return res.status(400).json({ error: "URL parameter is required" });
@@ -52,11 +55,11 @@ app.get("/filter", authenticateApiKey, async (req, res) => {
     // Apply jq filter if provided
     if (jqQuery) {
       try {
-        result = await jq.then(jq => jq.json(jsonData, jqQuery));
+        result = await jq.then((jq) => jq.json(jsonData, jqQuery));
       } catch (error) {
         return res.status(400).json({
           error: "Invalid jq query or filtering error",
-          details: error.message
+          details: error.message,
         });
       }
     }
@@ -77,7 +80,28 @@ app.get("/filter", authenticateApiKey, async (req, res) => {
       result = removeFields(result);
     }
 
-    res.json(result);
+    if (sort) {
+      // Send JSON result with sorted keys and no whitespace
+      const sortKeysDeep = (obj) => {
+        if (Array.isArray(obj)) {
+          return obj.map(sortKeysDeep);
+        } else if (obj !== null && typeof obj === "object") {
+          return Object.keys(obj)
+            .sort()
+            .reduce((acc, key) => {
+              acc[key] = sortKeysDeep(obj[key]);
+              return acc;
+            }, {});
+        }
+        return obj;
+      };
+
+      const sortedJson = //JSON.stringify(result);
+        JSON.stringify(sortKeysDeep(result));
+      res.type("application/json").send(sortedJson);
+    } else {
+      res.json(result);
+    }
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({
@@ -88,7 +112,13 @@ app.get("/filter", authenticateApiKey, async (req, res) => {
 
 app.get("/", (req, res) => {
   res.send(
-    'Hello! Try using <a href="/filter?apiKey=DEMO&url=https://jsonplaceholder.typicode.com/posts/1&jqQuery=.id">/filter</a>',
+    'Hello! Try using <a href="/filter?apiKey=DEMO&url=https://jsonplaceholder.typicode.com/posts/1&jqQuery=.">/filter</a> <br/><br/><br/><hr /><br/><h4>Alternatively use the form:</h4> <form action=/filter>URL: <input name="url" value="https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json" /><br/><hr /> <span><i>Either:</i></span><br/>Ignored Fields (comma separated):<input name="ignoredFields" /><br/><br/> <span><i>Or:</i></span><br/> jq filter: [<a href="https://jqlang.org/tutorial/">help</a>]<input name="jqQuery" /><br/><br/>Sort Keys: <input type="checkbox" name="sort" checked value="true" /><br/><br/>API Key: <input name="apiKey" value="DEMO" /><br/><br/> <input type="submit" /></form><br/><br/><hr/><br/><br/>Todo:<br/>Add Sort keys option (&sort=1)<br/>Add custom request headers option (&amp;header=blah:blah)',
+  );
+});
+
+app.get("/test", (req, res) => {
+  res.redirect(
+    "/filter?apiKey=DEMO&url=https://api.nytimes.com/svc/topstories/v2/home.json%3Fapi-key=anogZKYjTAU323PbqZCVsAdFduKSkuq1&jqQuery={results:%20(.results%20|%20map({title}))}",
   );
 });
 
