@@ -23,7 +23,7 @@ Eventually (check back if you ever have errors) I may setup a key system (can't 
 A wild finger in the air suggests in a distant future DEMO key gets limited at 100gb of transfer or 1million requests free per month per IP, after rate limited or register a key for 10x limit, donate for unlimited - but *I don't want the money/hassle so probably registered key = unlimited).
 
 
-## Can I get JSON on HTTPS sites using the HTTP (insecure) version of the hosted site at http://jq.gdenu.fi/ a bit like an insecure / https-busting proxy?
+## Can I use the insecure http version at http://jq.gdenu.fi/ to fetch JSON on HTTPS (secure) sites, a bit like an insecure / https-busting proxy?
 
 Yes, I liked the idea of potentially using it for lower memory usage on those pesky embedded microcontrollers.
 
