@@ -1,6 +1,6 @@
 ## Is this service always going to be free to use? Will you keep it online? What's it hosted on?
 
-It's free to use. Free Commercial usage may eventually* be rate limited at the lesser of 1terabyte or 10million connections per month, and a small fee will remove that restriction. See further below.
+It's free to use. Free Commercial usage may eventually* be rate limited at the lesser of 1terabyte or 10million connections per month, and a small fee or corporate sponsorship will remove that restriction. See further below.
 
 It's eventually going to be load balanced just for fun, but for now it runs on a nearly empty VPS (1gb connection, 150gb NVME disk, 6GB ram, 6 CPU cores) so it should be fine along with costing me very little. I'll get notifications of downtime and will fix ASAP.
 
